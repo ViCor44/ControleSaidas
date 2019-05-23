@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	   <style type="text/css">
+			.auto-style1 {
+			font-family: Arial;
+			font-size: 23px;
+			}
+		</style>
+        <title>Contadores Saidas</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script>
+	strCOUNTER = "";
+        function GetArduinoInputs()
+        {
+            nocache = "&nocache=" + Math.random() * 1000000;
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function()
+            {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        if (this.responseXML != null) {
+                            // extract XML data from XML file (containing switch states and analog value)
+                            document.getElementById("input1").innerHTML =
+                            this.responseXML.getElementsByTagName('exitcounter')[0].childNodes[0].nodeValue;
+                            
+                        }
+                    }
+                }
+            }
+            request.open("GET", "ajax_inputs" + strCOUNTER  + nocache, true);
+            request.send(null);
+            setTimeout('GetArduinoInputs()', 1000);
+		        strCOUNTER = "";
+        }
+	      function GetButton1(){
+            if (confirm("Confirma Reset a Torpedo?") == true) {        
+                nocache = "&nocache=" + Math.random() * 1000000;
+                var request = new XMLHttpRequest();            
+                request.open("GET", "http://191.188.127.50:8000/COUNTER=0" + nocache, true);
+                request.send(null);
+			       } 
+
+        }
+        
+    </script>
+	  <style>
+	     .myButton {
+	         -moz-box-shadow:inset 0px 39px 0px -24px #e67a73;
+	         -webkit-box-shadow:inset 0px 39px 0px -24px #e67a73;
+	         box-shadow:inset 0px 39px 0px -24px #e67a73;
+	         background-color:#e4685d;
+	         -moz-border-radius:4px;
+	         -webkit-border-radius:4px;
+	         border-radius:4px;
+	         border:1px solid #ffffff;
+	         display:inline-block;
+	         cursor:pointer;
+	         color:#ffffff;
+	         font-family:Arial;
+	         font-size:15px;
+	         padding:6px 15px;
+	         text-decoration:none;
+	         text-shadow:0px 1px 0px #b23e35;
+	     }
+	     .myButton:hover {
+	         background-color:#eb675e;
+	     }
+	     .myButton:active {
+	         position:relative;
+	         top:1px;
+	     }
+    </style>
+    </head>
+    <body onload="GetArduinoInputs()" style="background-color: #464344; color: #000000; font-family: Arial, Helvetica, sans-serif;">
+    	<br><br/>
+    	     <dd class="auto-style1" >Slide & Splash - Controlo de Saídas</dd>
+          <div id="panel1" style="position: absolute; left: 50px; top: 100px; width:250px; height:75px;border:1px solid #000;">
+            <dd class="auto-style1" style="position: absolute; left: -20px; top: 5px">Saídas</dd>
+            <div id="time1" style="position: absolute; left:125px; top: 42px; width:112px; height:25px;border:1px solid #000;"><span id="input1" style="font-size: 18px;">...</span></div>
+            <button class="myButton" type="button" id="RESET" style="position: absolute; left: 20px; top: 41px; height: 27px; width: 80px " onclick="GetButton1()">Reset</button><br /><br />
+          </div>        
+
+         <dd><span id="input10" class="auto-style1" style="visibility: hidden">...</span></dd>
+         
+              
+      </body>
+</html>
